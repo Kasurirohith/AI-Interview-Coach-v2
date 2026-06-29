@@ -15,8 +15,9 @@ function Signup() {
     try {
       setLoading(true);
 
+      // FIX: Replaced localhost endpoint with production Render backend URL
       const response = await fetch(
-        "http://127.0.0.1:7329/signup",
+        "https://ai-interview-coach-v2-1.onrender.com/signup",
         {
           method: "POST",
           headers: {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-const API_URL = "http://127.0.0.1:7329";
+// FIX: Pointing directly to your live Render backend URL
+const API_URL = "https://ai-interview-coach-v2-1.onrender.com";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ function Login() {
         }),
       });
 
-    const result = await response.json();
+      const result = await response.json();
 
       if (result.success) {
         localStorage.setItem("username", result.name);

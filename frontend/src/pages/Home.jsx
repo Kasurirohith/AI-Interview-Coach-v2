@@ -64,25 +64,32 @@ function Home() {
     };
   }, [recognition]);
 
+  // FIX: Real backend call triggered via dedicated button
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select a resume");
+      alert("Please select a resume first");
       return;
     }
 
     try {
       const result = await uploadResume(file);
 
+      // Save real response features to State
       setResumeText(result.resume_text);
       setAtsScore(result.ats_score);
-      setSkills(result.skills);
-      setMissingSkills(result.missing_skills);
-      setQuestions(result.questions);
+      setSkills(result.skills || []);
+      setMissingSkills(result.missing_skills || []);
+      setQuestions(result.questions || []);
 
-      alert("Resume Uploaded Successfully!");
+      // Mirror to storage for persistent dashboard visibility
+      localStorage.setItem("resumeName", file.name);
+      localStorage.setItem("atsScore", result.ats_score);
+      localStorage.setItem("resumeStatus", "Uploaded Successfully");
+
+      alert("Resume Uploaded and Analyzed Successfully!");
     } catch (error) {
       console.error(error);
-      alert("Upload Failed!");
+      alert("Upload Failed! Make sure your Render backend is up and running.");
     }
   };
 
@@ -100,7 +107,6 @@ function Home() {
   };
 
   const startInterview = async () => {
-    // Standard mock fallback questions array if real backend parsing isn't configured
     const targetQuestions = questions.length > 0 ? questions : [
       "Tell me about yourself and your technical background.",
       "What are your key professional strengths and core skills?",
@@ -124,7 +130,6 @@ function Home() {
 
       setInterviewStarted(true);
 
-      // Speak the first question after a short delay
       setTimeout(() => {
         speakQuestion(targetQuestions[0]);
       }, 500);
@@ -146,7 +151,6 @@ function Home() {
       const next = currentQuestion + 1;
       setCurrentQuestion(next);
 
-      // Speak the next question
       setTimeout(() => {
         speakQuestion(questions[next]);
       }, 300);
@@ -192,7 +196,7 @@ function Home() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [interviewStarted, currentQuestion]);
+  }, [interviewStarted, currentQuestion, questions, score, atsScore]);
 
   if (interviewStarted) {
     return (
@@ -214,7 +218,6 @@ function Home() {
             Question {currentQuestion + 1} of {questions.length}
           </h2>
 
-          {/* Timer Display */}
           <h3
             style={{
               color: "#60a5fa",
@@ -224,7 +227,6 @@ function Home() {
             ⏱️ Time Left: {timeLeft}s
           </h3>
 
-          {/* Progress Bar Display */}
           <div
             style={{
               width: "100%",
@@ -246,7 +248,6 @@ function Home() {
 
           <h3 style={{ marginTop: "20px" }}>{questions[currentQuestion]}</h3>
 
-          {/* Repeat Question Button */}
           <button
             className="secondary-btn"
             onClick={() => speakQuestion(questions[currentQuestion])}
@@ -260,7 +261,6 @@ function Home() {
             🔊 Repeat Question
           </button>
 
-          {/* Speak Answer Button */}
           <button
             className="secondary-btn"
             onClick={() => recognition && recognition.start()}
@@ -316,18 +316,18 @@ function Home() {
 
         <div className="resume-status">
           <div className="status-card">
-            <h3>{uploaded ? "✅ Uploaded" : " Not Uploaded"}</h3>
+            <h3>{uploaded ? "✅ Uploaded" : "❌ Not Uploaded"}</h3>
             <p>Resume Status</p>
           </div>
 
           <div className="status-card">
-            <h3>{uploaded ? atsScore : "--"}%</h3>
+            <h3>{uploaded ? `${atsScore}%` : "--"}</h3>
             <p>ATS Score</p>
           </div>
 
           <div className="status-card">
-            <h3>{questions.length > 0 ? questions.length : (uploaded ? 3 : 0)}</h3>
-            <p>Questions</p>
+            <h3>{questions.length > 0 ? questions.length : 0}</h3>
+            <p>Questions Generated</p>
           </div>
 
           <div className="status-card">
@@ -336,38 +336,34 @@ function Home() {
           </div>
         </div>
 
+        {/* FIX 2: File selector now only handles selecting/staging the item */}
         <input
           type="file"
           accept=".pdf,.doc,.docx"
           onChange={(e) => {
-            const file = e.target.files[0];
-
-            if (!file) return;
-
-            localStorage.setItem("resumeName", file.name);
-
-            const score = Math.floor(Math.random() * 16) + 80;
-
-            localStorage.setItem("atsScore", score);
-
-            localStorage.setItem(
-              "resumeStatus",
-              "Uploaded Successfully"
-            );
-
-            setAtsScore(score);
-            setFile(file);
-
-            alert("Resume Uploaded Successfully!");
+            const selectedFile = e.target.files[0];
+            if (selectedFile) {
+              setFile(selectedFile);
+            }
           }}
         />
 
-        <div className="buttons">
+        <div className="buttons" style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "15px" }}>
+          {/* FIX 2 (Continued): Added explicit call button to trigger network payload handling */}
+          <button
+            className="primary-btn"
+            onClick={handleUpload}
+            disabled={!file}
+            style={{ width: "100%" }}
+          >
+            🚀 Upload Resume
+          </button>
+
           <button
             className="secondary-btn"
             onClick={startInterview}
             disabled={!uploaded}
-            style={{ width: "100%", marginTop: "10px" }}
+            style={{ width: "100%" }}
           >
             Start Interview
           </button>
@@ -388,11 +384,7 @@ function Home() {
             {skills.length > 0 ? skills.map((skill, index) => (
               <li key={index}>{skill}</li>
             )) : (
-              <>
-                <li>React / JavaScript</li>
-                <li>Python / Full-Stack Development</li>
-                <li>SQL / Database Management</li>
-              </>
+              <li>No unique skills extracted.</li>
             )}
           </ul>
 
@@ -401,16 +393,13 @@ function Home() {
             {missingSkills.length > 0 ? missingSkills.map((skill, index) => (
               <li key={index}>{skill}</li>
             )) : (
-              <>
-                <li>Docker Containerization</li>
-                <li>AWS Deployment Architectures</li>
-              </>
+              <li>Great setup! No missing skills noted.</li>
             )}
           </ul>
 
           <h3>Resume Text</h3>
           <textarea
-            value={resumeText || `Parsed data simulation for file: ${localStorage.getItem("resumeName") || "resume.pdf"}`}
+            value={resumeText || ""}
             readOnly
             rows="10"
             style={{
