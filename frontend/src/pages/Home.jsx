@@ -308,7 +308,7 @@ function Home() {
       
       {/* ================= Welcome Dashboard ================= */}
       <div className="welcome-dashboard">
-        <h2>👋 Welcome {username}</h2>
+        <h2>Hello! Welcome {username}</h2>
         <p>
           Prepare smarter with AI-powered interview practice.
           Upload your resume and begin your personalized interview.
@@ -316,7 +316,7 @@ function Home() {
 
         <div className="resume-status">
           <div className="status-card">
-            <h3>{uploaded ? "✅ Uploaded" : "❌ Not Uploaded"}</h3>
+            <h3>{uploaded ? " Uploaded" : "Resume Not Uploaded"}</h3>
             <p>Resume Status</p>
           </div>
 
@@ -356,7 +356,7 @@ function Home() {
             disabled={!file}
             style={{ width: "100%" }}
           >
-            🚀 Upload Resume
+             Upload Resume
           </button>
 
           <button
