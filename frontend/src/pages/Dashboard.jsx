@@ -73,7 +73,7 @@ function Dashboard() {
 
       {/* ================= INTERACTIVE GOALS & ACHIEVEMENTS PANEL ================= */}
       <h2 style={{ marginTop: "60px", marginBottom: "25px", fontSize: "24px", textAlign: "left", fontWeight: "600" }}>
-        🚀 Your Goals & Milestone Badges
+         Your Goals & Milestone Badges
       </h2>
       
       <div
