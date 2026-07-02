@@ -1,71 +1,79 @@
+import "./Certificate.css";
+
 function Certificate() {
-  const username = localStorage.getItem("username") || "Guest";
-  const atsScore = localStorage.getItem("atsScore") || 0;
+  const username = localStorage.getItem("username") || "Guest";
+  const atsScore = localStorage.getItem("atsScore") || 0;
 
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#000",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "30px",
-      }}
-    >
-      <div
-        style={{
-          width: "900px",
-          background: "#fff",
-          borderRadius: "20px",
-          padding: "60px",
-          textAlign: "center",
-          color: "#000",
-          boxShadow: "0 20px 40px rgba(0,0,0,.5)",
-        }}
-      >
-        <h4>🏆 CERTIFICATE OF ACHIEVEMENT</h4>
+  const issueDate = new Date().toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
-        <h1 style={{ marginTop: 30 }}>
-          {username}
-        </h1>
+  return (
+    <div className="certificate-page">
+      <div className="certificate" id="certificate">
 
-        <p style={{ marginTop: 25, fontSize: 20 }}>
-          Successfully completed the AI Mock Interview
-          and achieved an ATS Score of
-        </p>
+        <div className="certificate-border">
 
-        <h2
-          style={{
-            color: "#2563eb",
-            fontSize: "60px",
-            margin: "30px 0",
-          }}
-        >
-          {atsScore}%
-        </h2>
+          <h3 className="title">
+            🏆 CERTIFICATE OF ACHIEVEMENT
+          </h3>
 
-        <p>
-          AI Interview Coach Platform
-        </p>
+          <p className="subtitle">
+            This Certificate is Proudly Presented To
+          </p>
 
-        <button
-          style={{
-            marginTop: 40,
-            padding: "12px 35px",
-            border: "none",
-            borderRadius: "10px",
-            background: "#2563eb",
-            color: "#fff",
-            cursor: "pointer",
-          }}
-          onClick={() => window.print()}
-        >
-          Download Certificate
-        </button>
-      </div>
-    </div>
-  );
+          <h1 className="name">
+            {username.toUpperCase()}
+          </h1>
+
+          <p className="description">
+            For successfully completing the
+            <br />
+            <b>AI Mock Interview</b>
+          </p>
+
+          <h4 className="score-title">
+            ATS SCORE
+          </h4>
+
+          <h2 className="score">
+            {atsScore}%
+          </h2>
+
+          <p className="platform">
+            AI Interview Coach Platform
+          </p>
+
+          <div className="footer">
+
+            <div>
+              <div className="line"></div>
+              <p>Authorized Signature</p>
+            </div>
+
+            <div>
+              <p>
+                <b>Issue Date</b>
+              </p>
+              <p>{issueDate}</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <button
+        className="download-btn"
+        onClick={() => window.print()}
+      >
+        Download Certificate
+      </button>
+
+    </div>
+  );
 }
 
 export default Certificate;
