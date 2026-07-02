@@ -154,7 +154,7 @@ function CompanyDetails() {
             marginBottom: "30px",
           }}
         >
-          🏢 {name} Interview Preparation
+           {name} Interview Preparation
         </h1>
 
         <div className="stats">
@@ -178,7 +178,7 @@ function CompanyDetails() {
 
         <br />
 
-        <h2>📋 Interview Rounds</h2>
+        <h2> Interview Rounds</h2>
 
         <ul>
           {company.rounds.map((round, index) => (
@@ -196,7 +196,7 @@ function CompanyDetails() {
 
         <br />
 
-        <h2>📚 Important Topics</h2>
+        <h2> Important Topics</h2>
 
         <div
           style={{
@@ -236,7 +236,7 @@ function CompanyDetails() {
               window.open(company.leetcode, "_blank")
             }
           >
-            💻 Practice on LeetCode
+             Practice on LeetCode
           </button>
 
           <button
