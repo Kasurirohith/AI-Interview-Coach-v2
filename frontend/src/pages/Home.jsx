@@ -309,7 +309,6 @@ function Home() {
       <div className="welcome-dashboard">
         <h2>Hello! Welcome {username}</h2>
         <p>
-          Prepare smarter with AI-powered interview practice.
           Upload your resume and begin your personalized interview.
         </p>
 
