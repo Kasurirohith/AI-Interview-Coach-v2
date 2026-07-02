@@ -20,7 +20,7 @@ function WelcomeCard() {
       }}
     >
       <h1 style={{ fontSize: "42px" }}>
-        👋 Welcome {username}
+        HELLO! Welcome {username}
       </h1>
 
       <p
@@ -49,8 +49,8 @@ function WelcomeCard() {
         <div className="stat-card">
           <h2>
             {resumeStatus === "Uploaded Successfully" 
-              ? "✅ Uploaded Successfully" 
-              : "❌ Not Uploaded"}
+              ? "Uploaded Successfully" 
+              : "Resume Not Uploaded"}
           </h2>
           <p>Status</p>
         </div>
