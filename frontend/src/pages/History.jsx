@@ -64,8 +64,8 @@ function History() {
                 <td>{item.interview_score}</td>
                 <td>
                   {item.interview_score >= 70
-                    ? "✅ Pass"
-                    : "❌ Fail"}
+                    ? " Pass"
+                    : " Fail"}
                 </td>
               </tr>
             ))
