@@ -299,7 +299,6 @@ function Home() {
 
   return (
     <div className="home">
-      <h1>AI Interview Coach</h1>
 
       <p>
         Prepare smarter with AI-powered mock interviews, personalized feedback,
