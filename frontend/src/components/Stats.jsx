@@ -40,7 +40,7 @@ function Stats() {
           fontWeight: "600"
         }}
       >
-        📊 Your Preparation Overview
+         Your Preparation Overview
       </h2>
 
       <div className="stats">
